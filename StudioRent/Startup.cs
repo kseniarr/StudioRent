@@ -11,8 +11,6 @@ using Microsoft.Extensions.Logging;
 using StudioRent.BLL.Interfaces;
 using StudioRent.BLL.Services;
 using StudioRent.Models;
-/*using StudioRent.DataAccess;
-*/
 using System;
 using System.Collections.Generic;
 using System.IO;
