@@ -105,6 +105,7 @@ namespace StudioRent.Models
                     .HasColumnName("idUser");
 
                 entity.Property(e => e.Email)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("email");
@@ -121,11 +122,11 @@ namespace StudioRent.Models
                     .IsUnicode(false)
                     .HasColumnName("lastName");
 
-                entity.Property(e => e.PhoneNumber)
+                entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("phoneNumber");
+                    .HasColumnName("password");
             });
 
             OnModelCreatingPartial(modelBuilder);

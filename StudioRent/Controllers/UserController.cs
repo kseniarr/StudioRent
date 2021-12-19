@@ -22,7 +22,24 @@ namespace StudioRent.Controllers
             _configuration = configuration;
             _userService = userService;
         }
-        [HttpPost]
+
+        [HttpPost, Route("LogIn")]
+        public IActionResult LogIn(string email, string password)
+        {
+            if (_userService.ValidateLogIn(email, password))
+                return Ok();
+            else return NotFound("Email or password was incorrect");
+        }
+
+        [HttpPost, Route("SignUp")]
+        public IActionResult SignUp([FromBody] User user)
+        {
+            if (_userService.ValidateSignUp(user))
+                return CreateUser(user);
+            else return NotFound("Email has alreaby been taken");
+        }
+
+        [HttpPost, Route("CreateUser")]
         public IActionResult CreateUser([FromBody]User user)
         {
             return Ok(_userService.CreateUser(user));

@@ -12,5 +12,7 @@ namespace StudioRent.BLL.Interfaces
         public List<User> DeleteUser(int userId);
         public User ChangeEmail(int userId, string email);
         public List<User> GetAllUsers();
+        public bool ValidateLogIn(string email, string password);
+        public bool ValidateSignUp(User user);
     }
 }
