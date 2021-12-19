@@ -27,6 +27,7 @@ namespace StudioRent.Controllers
         {
             return Ok(_roomService.GetRooms());
         }
+
         [HttpGet, Route("GetRoomById")]
         public IActionResult GetRoomById(int roomId)
         {

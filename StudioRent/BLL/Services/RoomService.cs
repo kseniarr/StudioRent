@@ -18,8 +18,6 @@ namespace StudioRent.BLL.Services
 
         public Room GetRoomById(int roomId)
         {
-            var test = _db.Rooms.Where(x => x.IdRoom == roomId).FirstOrDefault();
-            var test2 = _db.Rooms.Where(x => x.IdRoom == roomId);
             return _db.Rooms.Where(x => x.IdRoom == roomId).FirstOrDefault();
         }
 

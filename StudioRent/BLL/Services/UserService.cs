@@ -18,44 +18,18 @@ namespace StudioRent.BLL.Services
             _db = db;
         }
 
-        public User ChangeEmail(int userId, string email)
+        public User ChangePassword(int userId, string oldPwd, string newPwd)
         {
-            
-            _db.Users.Where(x => x.IdUser == userId).FirstOrDefault().Email = email;
+            _db.Users.Where(x => x.IdUser == userId).FirstOrDefault().Password = HashPwd(newPwd);
             _db.SaveChanges();
             return _db.Users.Where(x => x.IdUser == userId).FirstOrDefault();
         }
 
         public List<User> CreateUser(User user)
         {
-            byte[] salt = new byte[128 / 8];
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                rngCsp.GetNonZeroBytes(salt);
-            }
-            Console.WriteLine($"Salt: {Convert.ToBase64String(salt)}");
-
-            user.Password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: user.Password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-
+            user.Password = HashPwd(user.Password);
             _db.Users.Add(user);
             _db.SaveChanges();
-            return _db.Users.ToList();
-        }
-
-        public List<User> DeleteUser(int userId)
-        {
-            _db.Users.Remove(_db.Users.Where(x => x.IdUser == userId).FirstOrDefault());
-            _db.SaveChanges();
-            return _db.Users.ToList();
-        }
-
-        public List<User> GetAllUsers()
-        {
             return _db.Users.ToList();
         }
 
@@ -68,6 +42,28 @@ namespace StudioRent.BLL.Services
         public bool ValidateSignUp(User user)
         {
             return _db.Users.Where(x => x.Email == user.Email).FirstOrDefault() == null;            
+        }
+
+        public bool ValidatePwd(int userId, string pwd)
+        {
+            return HashPwd(pwd) == _db.Users.Where(x => x.IdUser == userId).FirstOrDefault().Password;
+        }
+
+        private string HashPwd(string pwd)
+        {
+            byte[] salt = new byte[128 / 8];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                rngCsp.GetNonZeroBytes(salt);
+            }
+            Console.WriteLine($"Salt: {Convert.ToBase64String(salt)}");
+
+            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: pwd,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
         }
     }
 }

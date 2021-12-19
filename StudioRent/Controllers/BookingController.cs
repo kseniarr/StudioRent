@@ -42,6 +42,5 @@ namespace StudioRent.Controllers
         {
             return Ok(_bookingService.DeleteBooking(bookingId));
         }
-
     }
 }

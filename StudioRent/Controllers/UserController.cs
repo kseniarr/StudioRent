@@ -35,29 +35,16 @@ namespace StudioRent.Controllers
         public IActionResult SignUp([FromBody] User user)
         {
             if (_userService.ValidateSignUp(user))
-                return CreateUser(user);
+                return Ok(_userService.CreateUser(user));
             else return NotFound("Email has alreaby been taken");
         }
 
-        [HttpPost, Route("CreateUser")]
-        public IActionResult CreateUser([FromBody]User user)
+        [HttpPut, Route("ChangePassword")]
+        public IActionResult ChangePassword(int userId, string oldPwd, string newPwd)
         {
-            return Ok(_userService.CreateUser(user));
-        }
-        [HttpDelete]
-        public IActionResult DeleteUser(int userId)
-        {
-            return Ok(_userService.DeleteUser(userId));
-        }
-        [HttpPut]
-        public IActionResult ChangeEmail(int userId, string email)
-        {
-            return Ok(_userService.ChangeEmail(userId, email));
-        }
-        [HttpGet]
-        public IActionResult GetAllUsers()
-        {
-            return Ok(_userService.GetAllUsers());
+            if (_userService.ValidatePwd(userId, oldPwd))
+                return Ok(_userService.ChangePassword(userId, oldPwd, newPwd));
+            else return BadRequest("Old password was incorrect.");
         }
     }
 }
