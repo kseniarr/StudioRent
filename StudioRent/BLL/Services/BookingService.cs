@@ -10,24 +10,49 @@ namespace StudioRent.BLL.Services
 {
     public class BookingService : IBookingService
     {
+        private readonly StudioRentDbContext _db;
+
+        public BookingService(StudioRentDbContext db)
+        {
+            _db = db;
+        }
+
         public List<Booking> CreateBooking(Booking booking)
         {
-            throw new NotImplementedException();
+            _db.Bookings.Add(booking);
+            _db.SaveChanges();
+            return _db.Bookings.ToList();
         }
 
         public List<Booking> DeleteBooking(int bookingId)
         {
-            throw new NotImplementedException();
+            _db.Bookings.Remove(_db.Bookings.Where(x => x.IdBooking == bookingId).First());
+            _db.SaveChanges();
+            return _db.Bookings.ToList();
         }
 
         public List<Booking> GetRoomBookings(int roomId)
         {
-            throw new NotImplementedException();
+            return _db.Bookings.Where(x => x.IdRoom == roomId).ToList();
         }
 
         public List<UserRoomBooking> GetUserBookings(int userId)
         {
-            throw new NotImplementedException();
+            return _db.Bookings.Join(_db.Rooms, 
+                p => p.IdRoom, 
+                c => c.IdRoom, 
+                (p, c) =>  
+                    new UserRoomBooking()
+                    {
+                        UserId = p.IdUser,
+                        RoomId = p.IdRoom,
+                        Title = c.Title,
+                        BookingId = p.IdBooking,
+                        HourFrom = p.HourFrom,
+                        HourTo = p.HourTo,
+                        Date = p.Date
+                    }
+                ).ToList();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudioRent.BLL.Interfaces
 {
-    interface IUserService
+    public interface IUserService
     {
         public List<User> CreateUser(User user);
         public List<User> DeleteUser(int userId);

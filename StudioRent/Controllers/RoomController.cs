@@ -16,9 +16,10 @@ namespace StudioRent.Controllers
         private readonly IConfiguration _configuration;
         private readonly IRoomService _roomService;
 
-        public RoomController(IConfiguration configuration)
+        public RoomController(IConfiguration configuration, IRoomService roomService)
         {
             _configuration = configuration;
+            _roomService = roomService;
         }
 
         [HttpGet]
@@ -26,7 +27,7 @@ namespace StudioRent.Controllers
         {
             return Ok(_roomService.GetRooms());
         }
-        [HttpGet]
+        [HttpGet, Route("GetRoomById")]
         public IActionResult GetRoomById(int roomId)
         {
             return Ok(_roomService.GetRoomById(roomId));

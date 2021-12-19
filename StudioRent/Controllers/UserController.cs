@@ -17,12 +17,13 @@ namespace StudioRent.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
 
-        public UserController(IConfiguration configuration)
+        public UserController(IConfiguration configuration, IUserService userService)
         {
             _configuration = configuration;
+            _userService = userService;
         }
         [HttpPost]
-        public IActionResult CreateUser(User user)
+        public IActionResult CreateUser([FromBody]User user)
         {
             return Ok(_userService.CreateUser(user));
         }
@@ -31,7 +32,7 @@ namespace StudioRent.Controllers
         {
             return Ok(_userService.DeleteUser(userId));
         }
-        [HttpPost]
+        [HttpPut]
         public IActionResult ChangeEmail(int userId, string email)
         {
             return Ok(_userService.ChangeEmail(userId, email));

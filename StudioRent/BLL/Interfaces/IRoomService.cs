@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudioRent.BLL.Interfaces
 {
-    interface IRoomService
+    public interface IRoomService
     {
         public List<Room> GetRooms();
         public Room GetRoomById(int roomId);

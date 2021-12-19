@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudioRent.BLL.Interfaces
 {
-    interface IBookingService
+    public interface IBookingService
     {
         public List<Booking> GetRoomBookings(int roomId);
         public List<UserRoomBooking> GetUserBookings(int userId);

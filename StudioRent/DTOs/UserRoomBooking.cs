@@ -9,7 +9,7 @@ namespace StudioRent.DTOs
     {
         public int UserId { get; set; }
         public int RoomId { get; set; }
-        public int Title { get; set; }
+        public string Title { get; set; }
         public int BookingId { get; set; }
         public int HourFrom { get; set; }
         public int HourTo { get; set; }

@@ -19,15 +19,6 @@ namespace StudioRent.Models
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
-       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=LAPTOP-3B18L4D0;initial catalog=StudioRent;Integrated Security=True;ConnectRetryCount=0");
-            }
-        }*/
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
@@ -37,7 +28,7 @@ namespace StudioRent.Models
                 entity.HasKey(e => e.IdBooking);
 
                 entity.Property(e => e.IdBooking)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("idBooking");
 
                 entity.Property(e => e.Date)
@@ -110,7 +101,7 @@ namespace StudioRent.Models
                 entity.HasKey(e => e.IdUser);
 
                 entity.Property(e => e.IdUser)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("idUser");
 
                 entity.Property(e => e.Email)

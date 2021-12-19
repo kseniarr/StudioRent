@@ -17,16 +17,17 @@ namespace StudioRent.Controllers
         private readonly IConfiguration _configuration;
         private readonly IBookingService _bookingService;
 
-        public BookingController(IConfiguration configuration)
+        public BookingController(IConfiguration configuration, IBookingService bookingService)
         {
             _configuration = configuration;
+            _bookingService = bookingService;
         }
-        [HttpGet]
+        [HttpGet, Route("GetRoomBookings")]
         public IActionResult GetRoomBookings(int roomId)
         {
             return Ok(_bookingService.GetRoomBookings(roomId));
         }
-        [HttpGet]
+        [HttpGet, Route("GetUserBookings")]
         public IActionResult GetUserBookings(int userId)
         {
             return Ok(_bookingService.GetUserBookings(userId)); 
