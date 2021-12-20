@@ -22,21 +22,25 @@ namespace StudioRent.Controllers
             _configuration = configuration;
             _bookingService = bookingService;
         }
+
         [HttpGet, Route("GetRoomBookings")]
         public IActionResult GetRoomBookings(int roomId)
         {
             return Ok(_bookingService.GetRoomBookings(roomId));
         }
+
         [HttpGet, Route("GetUserBookings")]
         public IActionResult GetUserBookings(int userId)
         {
             return Ok(_bookingService.GetUserBookings(userId)); 
         }
+
         [HttpPost]
         public IActionResult CreateBooking(Booking booking)
         {
             return Ok(_bookingService.CreateBooking(booking));
         }
+
         [HttpDelete]
         public IActionResult DeleteBooking(int bookingId)
         {

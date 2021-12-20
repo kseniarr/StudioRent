@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Http;
 using StudioRent.BLL.Interfaces;
+using StudioRent.DTOs;
+using StudioRent.Exceptions;
 using StudioRent.Models;
 using System;
 using System.Collections.Generic;
@@ -12,58 +15,98 @@ namespace StudioRent.BLL.Services
     public class UserService : IUserService
     {
         private readonly StudioRentDbContext _db;
+        private IHttpContextAccessor _accessor;
 
-        public UserService(StudioRentDbContext db)
+        public UserService(StudioRentDbContext db, IHttpContextAccessor accessor)
         {
             _db = db;
+            _accessor = accessor;
         }
 
-        public User ChangePassword(int userId, string oldPwd, string newPwd)
-        {
-            _db.Users.Where(x => x.IdUser == userId).FirstOrDefault().Password = HashPwd(newPwd);
-            _db.SaveChanges();
-            return _db.Users.Where(x => x.IdUser == userId).FirstOrDefault();
-        }
 
-        public List<User> CreateUser(User user)
+        public List<User> SignUp(UserSignUpDto user)
         {
-            user.Password = HashPwd(user.Password);
-            _db.Users.Add(user);
+            HashPwd(user.Password, out byte[] pwdKey, out byte[] pwdHash);
+
+            _db.Users.Add(new User() { 
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = pwdHash,
+                PasswordKey = pwdKey
+            });
+
             _db.SaveChanges();
             return _db.Users.ToList();
         }
+        public bool ValidateSignUp(UserSignUpDto user)
+        {
+            if (string.IsNullOrEmpty(user.Email)) throw new InvalidEmailException();
+            return GetUserByEmail(user.Email) == null && !string.IsNullOrEmpty(user.Email); 
+        }
 
+        public void LogIn(string email)
+        {
+            _accessor.HttpContext.Session.SetString("userId", GetUserByEmail(email).IdUser.ToString());
+        }
         public bool ValidateLogIn(string email, string password)
         {
-            return _db.Users.Where(x => x.Email == email).FirstOrDefault() != null // if email not found
-                && _db.Users.Where(x => x.Email == email).FirstOrDefault().Password == password; // if pwd not found
+            if (string.IsNullOrEmpty(email)) throw new InvalidEmailException();
+            return GetUserByEmail(email) != null // if email was found 
+                && ValidatePwd(password, GetUserByEmail(email).IdUser); // if pwd correct
         }
 
-        public bool ValidateSignUp(User user)
+        public void LogOut()
         {
-            return _db.Users.Where(x => x.Email == user.Email).FirstOrDefault() == null;            
+            _accessor.HttpContext.Session.Remove("userId");
         }
 
-        public bool ValidatePwd(int userId, string pwd)
+        public bool ValidatePwd(string userPwd, int userId)
         {
-            return HashPwd(pwd) == _db.Users.Where(x => x.IdUser == userId).FirstOrDefault().Password;
-        }
+            if (_db.Users.Find(userId) == null) throw new UserNotFoundException(userId);
+            if (string.IsNullOrEmpty(userPwd)) throw new InvalidPasswordException();
 
-        private string HashPwd(string pwd)
-        {
-            byte[] salt = new byte[128 / 8];
-            using (var rngCsp = new RNGCryptoServiceProvider())
+            byte[] dbPwd = _db.Users.Find(userId).Password, dbKey = _db.Users.Find(userId).PasswordKey,
+                userPwdHash = HashPwd(userPwd, dbKey);
+
+            for(int i = 0; i < dbPwd.Length; i++)
             {
-                rngCsp.GetNonZeroBytes(salt);
+                if (dbPwd[i] != userPwdHash[i]) return false;
             }
-            Console.WriteLine($"Salt: {Convert.ToBase64String(salt)}");
+            return true;
+        }
+        public User ChangePwd(int userId, string oldPwd, string newPwd)
+        {
+            if (ValidatePwd(oldPwd, userId))
+            {
 
-            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: pwd,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
+                _db.SaveChanges();
+                return _db.Users.Where(x => x.IdUser == userId).FirstOrDefault();
+            }
+            else return null;
+        }
+        private byte[] HashPwd(string pwd, out byte[] pwdKey, out byte[] pwdHash)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                pwdKey = hmac.Key;
+                pwdHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(pwd));
+            }
+            return pwdHash;
+        }
+        private byte[] HashPwd(string pwd, byte[] pwdKey)
+        {
+            byte[] pwdHash;
+            using (var hmac = new HMACSHA512(pwdKey))
+            {
+                pwdHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(pwd));
+            }
+            return pwdHash;
+        }
+
+        private User GetUserByEmail(string email)
+        {
+            return _db.Users.Where(x => x.Email == email).FirstOrDefault();
         }
     }
 }

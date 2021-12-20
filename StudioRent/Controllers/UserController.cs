@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using StudioRent.BLL.Interfaces;
+using StudioRent.DTOs;
+using StudioRent.Exceptions;
 using StudioRent.Models;
 using System;
 using System.Collections.Generic;
@@ -16,35 +18,65 @@ namespace StudioRent.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        private IHttpContextAccessor _accessor;
 
-        public UserController(IConfiguration configuration, IUserService userService)
+        public UserController(IConfiguration configuration, IUserService userService, IHttpContextAccessor accessor)
         {
             _configuration = configuration;
             _userService = userService;
+            _accessor = accessor;
+        }
+
+        [HttpPost, Route("SignUp")]
+        public IActionResult SignUp([FromBody] UserSignUpDto user)
+        {
+            try
+            {
+                if (_userService.ValidateSignUp(user))
+                    return Ok(_userService.SignUp(user));
+                else return UnprocessableEntity("Email has alreaby been taken");
+            }
+            catch (InvalidEmailException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost, Route("LogIn")]
         public IActionResult LogIn(string email, string password)
         {
-            if (_userService.ValidateLogIn(email, password))
-                return Ok();
-            else return NotFound("Email or password was incorrect");
+            try
+            {
+                if (_userService.ValidateLogIn(email, password))
+                {
+                    _userService.LogIn(email);
+                    return Ok("Log in successful");
+                }
+                else return UnprocessableEntity("Email or password was incorrect");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpPost, Route("SignUp")]
-        public IActionResult SignUp([FromBody] User user)
+        [HttpPost, Route("LogOut")]
+        public IActionResult LogOut()
         {
-            if (_userService.ValidateSignUp(user))
-                return Ok(_userService.CreateUser(user));
-            else return NotFound("Email has alreaby been taken");
+            _userService.LogOut();
+            return Ok("You have been successfully logged out."); // change to redirect later
         }
 
         [HttpPut, Route("ChangePassword")]
         public IActionResult ChangePassword(int userId, string oldPwd, string newPwd)
         {
-            if (_userService.ValidatePwd(userId, oldPwd))
-                return Ok(_userService.ChangePassword(userId, oldPwd, newPwd));
-            else return BadRequest("Old password was incorrect.");
+            if (_accessor.HttpContext.Session.Keys.Contains("userId"))
+            {
+                if (_userService.ValidatePwd(oldPwd, userId))
+                    return NoContent();
+                else return UnprocessableEntity("Old password was incorrect.");
+            }
+            else return Unauthorized();
         }
     }
 }

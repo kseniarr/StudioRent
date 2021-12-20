@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Session;
 
 namespace StudioRent
 {
@@ -43,6 +44,9 @@ namespace StudioRent
             services.AddDbContext<StudioRentDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
+            services.AddHttpContextAccessor();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddControllers();
         }
 
@@ -60,6 +64,8 @@ namespace StudioRent
 
             app.UseAuthorization();
 
+            app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -69,7 +75,7 @@ namespace StudioRent
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
                 RequestPath = "/images"
-            }) ;
+            });
         }
     }
 }

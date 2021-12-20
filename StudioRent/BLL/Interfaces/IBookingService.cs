@@ -10,9 +10,8 @@ namespace StudioRent.BLL.Interfaces
     public interface IBookingService
     {
         public List<Booking> GetRoomBookings(int roomId);
-        public List<UserRoomBooking> GetUserBookings(int userId);
+        public List<UserRoomBookingDto> GetUserBookings(int userId);
         public List<Booking> CreateBooking(Booking booking);
-        public List<Booking> DeleteBooking(int bookingId);
-       
+        public List<Booking> DeleteBooking(int bookingId);  
     }
 }

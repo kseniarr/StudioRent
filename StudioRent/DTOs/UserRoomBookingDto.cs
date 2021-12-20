@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudioRent.DTOs
 {
-    public class UserRoomBooking
+    public class UserRoomBookingDto
     {
         public int UserId { get; set; }
         public int RoomId { get; set; }
