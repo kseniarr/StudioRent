@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header'
 import Button from './Button'
 import RoomInfo from './RoomInfo';
 import Table from './Table';
 import Footer from './Footer';
-import { useState } from 'react'
+import { apiUrl } from './../endpoints'
 
 function App() {
+
+    useEffect(() => {
+        const fetchRooms = async () => {
+            const res = await fetch(apiUrl + 'room');
+            const data = await res.json();
+            console.log(data);
+        }
+
+        fetchRooms();
+    }, []);
+
     const regularBtn = useState("btn");
     const headerBtn = useState("btn headerBtn");
     const activeBtn = useState("btn btnActive");

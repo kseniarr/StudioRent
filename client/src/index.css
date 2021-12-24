@@ -14,7 +14,7 @@
     --white: #F2F0F9;
     --magenta: #DE36EB;
     --purple: #5921D2;
-    --grey: #E5E5E5;
+    --grey: #EBE7F0;
     --light-purple: #C3B1EC;
     font-size: 16px;
     overflow-x: hidden;
@@ -56,7 +56,7 @@ td{
     margin-top: 0.2rem;
 }
 th{
-    background-color: var(--purple);
+    background-color: var(--light-purple);
     padding: 1rem 0.5rem;
 }
 
@@ -85,7 +85,6 @@ th{
 .btnActive{
     background-color: var(--magenta);
     color: var(--white);
-    font-weight: 700;
     font-size: 1.1rem;
 }
 .headerBtn{
@@ -109,11 +108,11 @@ th{
     border-style: ridge;
 }
 .btnClickable{
-    background-color: var(--light-purple);
+    background-color: var(--white);
     border-style: outset;
 }
 .btnChosen{
-    background-color: var(--magenta);
+    background-color: var(--light-purple);
     color: var(--white);
     border-style: inset;
 }

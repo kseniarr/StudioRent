@@ -34,7 +34,11 @@ namespace StudioRent
         {
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+                //c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+                c.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(Configuration.GetValue<string>("clientUrl")).AllowAnyMethod().AllowAnyHeader();
+                });
             });
 
             services.AddTransient<IBookingService, BookingService>();
@@ -60,6 +64,8 @@ namespace StudioRent
 
             app.UseHttpsRedirection();
 
+            app.UseCors();
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -69,12 +75,6 @@ namespace StudioRent
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-                RequestPath = "/images"
             });
         }
     }
