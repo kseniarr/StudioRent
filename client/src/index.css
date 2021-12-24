@@ -14,7 +14,8 @@
     --white: #F2F0F9;
     --magenta: #DE36EB;
     --purple: #5921D2;
-    --grey: #BDBDBD;
+    --grey: #E5E5E5;
+    --light-purple: #C3B1EC;
     font-size: 16px;
     overflow-x: hidden;
 }
@@ -22,14 +23,12 @@ body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
-    
     background-color: var(--white);
     color: var(--dark-blue);
 }
-
 header{
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
     background-color: var(--dark-blue);
     color: var(--white);
@@ -43,15 +42,22 @@ h2, h3, h4 {
 }
 h2{
     font-size: 1.5rem;
-    /* font-weight: 300; */
     margin: 0;
 }
-
-/* GENERAL CLASSES */
-.center{
+table{
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    border-spacing: 0;
+    margin-bottom: 2rem;
+}
+td{
+    padding: 0;
+    margin-top: 0.2rem;
+}
+th{
+    background-color: var(--purple);
+    padding: 1rem 0.5rem;
 }
 
 
@@ -63,7 +69,6 @@ h2{
     align-items: center;
     padding: 4rem 8rem;
 }
-
 .btn{
     background-color: var(--white);
     color: var(--dark-blue);
@@ -86,14 +91,40 @@ h2{
 .headerBtn{
     font-family: "Days One", sans-serif;
     font-weight: 200;
+    background-color: var(--magenta);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem auto;
+}
+.tableBtn{
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: none;
+    border-color: var(--white);
 }
 .btnInactive{
     background-color: var(--grey);
-    border: none;
     cursor: default;
+    border-style: ridge;
+}
+.btnClickable{
+    background-color: var(--light-purple);
+    border-style: outset;
+}
+.btnChosen{
+    background-color: var(--magenta);
+    color: var(--white);
+    border-style: inset;
 }
 
+
 /* CUSTOM CLASSES */
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .companyName{
     color: var(--magenta);
     font-family: 'Russo One', sans-serif;
@@ -104,7 +135,6 @@ h2{
 .companyName > span {
     color: var(--purple);
 }
-
 .hero {
     background-color: var(--purple);
     color: var(--white);
@@ -113,11 +143,9 @@ h2{
     flex-direction: column;
     text-align: center;
 }
-
 .header{
     margin-top: 1em;
     font-family: 'Days One', 'Russo One', sans-serif;
-    /* letter-spacing: 0.03em; */
     font-weight: 200;
     font-size: 2.2rem;
 }
@@ -127,16 +155,13 @@ h2{
 .hero h2{
     width: 50vw;
     opacity: 85%;
-    /* font-weight: 300; */
 }
 .hero p{
     white-space: pre-wrap;
     width: 30vw;
-    /* text-align: center; */
     opacity: 73%;
     margin-top: 2em;
 }
-
 .roomDiv{
     flex-direction: column;
     margin-bottom: 4rem;
@@ -169,6 +194,7 @@ h2{
     align-items: center;
     background-color: var(--dark-blue);
     color: var(--white);
+    margin-top: 4rem;
 }
 .footerInfo{
     padding: 0 12rem 0 8rem;

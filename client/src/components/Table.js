@@ -1,45 +1,53 @@
 import Button from "./Button";
-import ObjectRow from "./ObjectRow";
+import { useState } from 'react'
 
-const makeRows = () => {
-    var rows = [];
-    for (var i = 0; i < 7; i++) {
-        for(var j = 0; j < 23; j++)
-            rows.push(<ObjectRow key={i} type="btnInactive" text={(parseInt(10) + j)+":00 - " + (parseInt(11) + j)+":00"} />);
+const Table = ( {stateList} ) => {
+    const inactiveTBtn = useState("tableBtn btnInactive");
+    const clickableTBtn = useState("tableBtn btnClickable");
+    const chosenTBtn = useState("tableBtn btnChosen");
+
+    let currDayOfWeek = (new Date()).getDay();
+    let emptyCols = 0;
+    if(currDayOfWeek < 7) emptyCols = currDayOfWeek - 1;
+    console.log(emptyCols);
+
+    const getDates = () =>  {
+        let dates = [];
+        for(let i = 0; i < 7; i++){
+            let date = new Date();
+            date.setDate(date.getDate() + 1);
+            if(i < emptyCols){
+                date.setDate(date.getDate() - parseInt(emptyCols - i));
+            }
+            else{
+                date.setDate(date.getDate() + parseInt((i + 1)%(currDayOfWeek)));
+            }
+            dates.push(<th>{date.getUTCDate() + "." + date.getMonth()}</th>);
+        }
+        return <tr>{ dates }</tr>;
     }
-    return <tbody>{rows}</tbody>;
-}
 
-const Table = () => {
+    const makeRows = () => {
+        let rows = [];
+        for(let i = 0; i < 13; i++){
+            let cols = [];
+            for(let j = 0; j < 7; j++)
+                cols.push(  <td>
+                                <Button state={ j < emptyCols ? inactiveTBtn[0] : clickableTBtn[0] } 
+                                        text={(10 + i) + ":00 - " + (11 + i) + ":00"
+                                }/>
+                            </td>);
+            rows.push(<tr>{ cols }</tr>);
+        }
+        return rows;
+    }
+    console.log(makeRows());
     return (
         <table>
-            {/* <tr>
-                <th>20.12</th>
-                <th>21.12</th>
-                <th>22.12</th>
-                <th>23.12</th>
-                <th>24.12</th>
-                <th>25.12</th>
-                <th>26.12</th>
-            </tr> */}
-            {makeRows()}
-            {/* <tr>
-            
-                {/* <td><Button type="btnInactive" text="10:00 - 11:00"/></td>
-                <td><Button type="btnInactive" text="11:00 - 12:00"/></td>
-                <td><Button type="btnInactive" text="12:00 - 13:00"/></td>
-                <td><Button type="btnInactive" text="13:00 - 14:00"/></td>
-                <td><Button type="btnInactive" text="14:00 - 15:00"/></td>
-                <td><Button type="btnInactive" text="15:00 - 16:00"/></td>
-                <td><Button type="btnInactive" text="16:00 - 17:00"/></td>
-                <td><Button type="btnInactive" text="17:00 - 18:00"/></td>
-                <td><Button type="btnInactive" text="18:00 - 19:00"/></td>
-                <td><Button type="btnInactive" text="19:00 - 20:00"/></td>
-                <td><Button type="btnInactive" text="20:00 - 21:00"/></td>
-                <td><Button type="btnInactive" text="21:00 - 22:00"/></td>
-                <td><Button type="btnInactive" text="22:00 - 23:00"/></td> */}
-           
-            
+            <tbody>
+                { getDates() }
+                { makeRows() }
+            </tbody>
         </table>
     )
 }

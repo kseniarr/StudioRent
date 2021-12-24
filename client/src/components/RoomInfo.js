@@ -1,7 +1,8 @@
 import Button from './Button';
 import Table from './Table'
+import { useState } from 'react' 
 
-const RoomInfo = ({ roomId } ) => {    
+const RoomInfo = ({ roomId } ) => {
     return (
         <div className = "roomDiv center">
             <div className = "imgDiv">
@@ -12,12 +13,10 @@ const RoomInfo = ({ roomId } ) => {
             <h1>Черный зал</h1>
             <p>Идеально подходит для групповых занятий, репетиций, курсов</p>
             <div className = "info center">
-                <p className="additionalInfo"><span className="purpleTitle">Размер:</span> 50 кв.м</p>
-                <p className="additionalInfo"><span className="purpleTitle">Вместимость:</span> до 30 человек</p>
-                <p className="additionalInfo"><span className="purpleTitle">Покрытие:</span> ламинат</p>
+                <p className = "additionalInfo"><span className = "purpleTitle">Размер:</span> 50 кв.м</p>
+                <p className = "additionalInfo"><span className = "purpleTitle">Вместимость:</span> до 30 человек</p>
+                <p className = "additionalInfo"><span className = "purpleTitle">Покрытие:</span> ламинат</p>
             </div>
-            {/* <Table /> */}
-            <Button type="headerBtn" text="Забронировать"/>
         </div>
     )
 }

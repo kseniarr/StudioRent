@@ -1,12 +1,17 @@
+import { userState, useState } from 'react'
 
-const Button = ({ text, type, onClick } ) => {
+const onClickFunc = () => {
+    console.log("click")
+}
+
+const Button = ({ state, text, onClick} ) => {
     return (
-        <button onClick = { onClick } className = { "btn "+ type }>{ text }</button>
+        <button className = { state } onClick = {onClick}>{ text }</button>
     )
 }
 
 Button.defaultProps = {
-    type: "btn"
+    onClick: onClickFunc
 }
 
 export default Button
