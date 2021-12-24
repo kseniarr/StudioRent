@@ -9,7 +9,6 @@ const Table = ( {stateList} ) => {
     let currDayOfWeek = (new Date()).getDay();
     let emptyCols = 0;
     if(currDayOfWeek < 7) emptyCols = currDayOfWeek - 1;
-    console.log(emptyCols);
 
     const getDates = () =>  {
         let dates = [];
@@ -41,7 +40,6 @@ const Table = ( {stateList} ) => {
         }
         return rows;
     }
-    console.log(makeRows());
     return (
         <table>
             <tbody>
