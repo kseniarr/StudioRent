@@ -1,7 +1,7 @@
 import Button from "./Button";
 import { useState } from 'react'
 
-const Table = ( {stateList} ) => {
+const Table = ( ) => {
     const inactiveTBtn = useState("tableBtn btnInactive");
     const clickableTBtn = useState("tableBtn btnClickable");
     const chosenTBtn = useState("tableBtn btnChosen");
@@ -12,18 +12,15 @@ const Table = ( {stateList} ) => {
     if(currDayOfWeek < 7) emptyCols = currDayOfWeek - 1;
 
     const getDates = () =>  {
+        let curr = new Date;
         let dates = [];
-        for(let i = 0; i < 7; i++){
-            let date = new Date();
-            date.setDate(date.getDate() + 1);
-            if(i < emptyCols){
-                date.setDate(date.getDate() - parseInt(emptyCols - i));
-            }
-            else{
-                date.setDate(date.getDate() + parseInt((i + 1)%(currDayOfWeek)));
-            }
-            dates.push(<th>{date.getUTCDate() + "." + date.getMonth()}</th>);
+
+        for (let i = 1; i <= 7; i++) {
+            let first = curr.getDate() - curr.getDay() + i;
+            let day = new Date(curr.setDate(first));
+            dates.push(<th>{ day.getUTCDate() + "." + ("0" + (day.getMonth() + 1)).slice(-2) }</th>);
         }
+
         return <tr>{ dates }</tr>;
     }
 
@@ -34,8 +31,7 @@ const Table = ( {stateList} ) => {
             for(let j = 0; j < 7; j++)
                 cols.push(  <td>
                                 <Button state={ j < emptyCols ? inactiveTBtn[0] : clickableTBtn[0] } 
-                                        text={(10 + i) + ":00 - " + (11 + i) + ":00"
-                                }/>
+                                        text={ (10 + i) + ":00 - " + (11 + i) + ":00" }/>
                             </td>);
             rows.push(<tr>{ cols }</tr>);
         }
