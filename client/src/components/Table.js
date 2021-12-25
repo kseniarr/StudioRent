@@ -7,6 +7,7 @@ const Table = ( {stateList} ) => {
     const chosenTBtn = useState("tableBtn btnChosen");
 
     let currDayOfWeek = (new Date()).getDay();
+    if(currDayOfWeek == 0) currDayOfWeek = 7;
     let emptyCols = 0;
     if(currDayOfWeek < 7) emptyCols = currDayOfWeek - 1;
 

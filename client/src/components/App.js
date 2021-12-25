@@ -4,27 +4,35 @@ import Button from './Button'
 import RoomInfo from './RoomInfo';
 import Table from './Table';
 import Footer from './Footer';
-import { apiUrl } from './../endpoints'
+import { apiUrl } from './../endpoints';
+import axios from 'axios';
 
 function App() {
+    const [rooms, setRooms] = useState(
+        [{
+            title: ""
+        },
+        {
+            title: ""
+        },{
+            title: ""
+        }]
+    ); 
 
     useEffect(() => {
-        const fetchRooms = async () => {
-            const res = await fetch(apiUrl + 'room');
-            const data = await res.json();
-            console.log(data);
-        }
-
-        fetchRooms();
-    }, []);
-
+        axios.get(apiUrl + 'room')
+        .then(response => {
+            setRooms(response.data);
+        });
+    }, [])
+    
     const regularBtn = useState("btn");
     const headerBtn = useState("btn headerBtn");
     const activeBtn = useState("btn btnActive");
 
-    const [blackRoom, setBlackRoom] = useState(activeBtn[0])
-    const [whiteRoom, setWhiteRoom] = useState(regularBtn[0])
-    const [smallRoom, setSmallRoom] = useState(regularBtn[0])
+    const [room1, setRoom1] = useState({class: activeBtn[0]});
+    const [room2, setRoom2] = useState({class: regularBtn[0]});
+    const [room3, setRoom3] = useState({class: regularBtn[0]});
 
     const [currRoom, setCurrRoom] = useState("1");
 
@@ -32,20 +40,20 @@ function App() {
     {
         return function () {
             setCurrRoom(id);
-            if (id == "1") {
-                setBlackRoom(activeBtn[0]);
-                setWhiteRoom(regularBtn[0]);
-                setSmallRoom(regularBtn[0]);
+            if (id == rooms[0].idRoom) {
+                setRoom1({class: activeBtn[0]});
+                setRoom2({class: regularBtn[0]});
+                setRoom3({class: regularBtn[0]});
             }
-            else if (id == "2"){
-                setBlackRoom(regularBtn[0]);
-                setWhiteRoom(activeBtn[0]);
-                setSmallRoom(regularBtn[0]);
+            else if (id == rooms[1].idRoom){
+                setRoom1({class: regularBtn[0]});
+                setRoom2({class: activeBtn[0]});
+                setRoom3({class: regularBtn[0]});
             }
             else{
-                setBlackRoom(regularBtn[0]);
-                setWhiteRoom(regularBtn[0]);
-                setSmallRoom(activeBtn[0]);
+                setRoom1({class: regularBtn[0]});
+                setRoom2({class: regularBtn[0]});
+                setRoom3({class: activeBtn[0]});
             }
         };
     }
@@ -60,17 +68,17 @@ function App() {
                 <Button state = { headerBtn[0] } text= "Забронировать"/>
             </div>
             <div className = "btnDiv">
-                <Button state = {blackRoom} 
-                        text = "Черный зал" 
-                        onClick = { chooseRoom("1") }
+                <Button state = { room1.class } 
+                        text = { rooms[0].title } 
+                        onClick = { chooseRoom(rooms[0].idRoom) }
                 />
-                <Button state = {whiteRoom} 
-                        text = "Белый зал" 
-                        onClick = { chooseRoom("2") }
+                <Button state = { room2.class } 
+                        text = { rooms[1].title } 
+                        onClick = { chooseRoom(rooms[1].idRoom) }
                 />
-                <Button state = {smallRoom} 
-                        text = "Малый зал" 
-                        onClick = { chooseRoom("3") }
+                <Button state = { room3.class } 
+                        text = { rooms[2].title } 
+                        onClick = { chooseRoom(rooms[2].idRoom) }
                 />
             </div>
             <RoomInfo roomId = {currRoom}/> 
