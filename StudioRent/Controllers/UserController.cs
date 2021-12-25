@@ -43,13 +43,13 @@ namespace StudioRent.Controllers
         }
 
         [HttpPost, Route("LogIn")]
-        public IActionResult LogIn(string email, string password)
+        public IActionResult LogIn([FromBody] LoginDto login)
         {
             try
             {
-                if (_userService.ValidateLogIn(email, password))
+                if (_userService.ValidateLogIn(login.UserEmail, login.UserPwd))
                 {
-                    _userService.LogIn(email);
+                    _userService.LogIn(login.UserEmail);
                     return Ok("Log in successful");
                 }
                 else return UnprocessableEntity("Email or password was incorrect");
@@ -58,6 +58,12 @@ namespace StudioRent.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet, Route("IsLoggedIn")]
+        public IActionResult IsLoggedIn()
+        {
+            return Ok(_userService.IsLoggedIn());
         }
 
         [HttpPost, Route("LogOut")]

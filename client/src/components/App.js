@@ -8,6 +8,16 @@ import { apiUrl } from './../endpoints';
 import axios from 'axios';
 
 function App() {
+    const [userLoggedIn, setLoggedIn] = useState(false);
+    
+    useEffect(() => {
+        axios.get(apiUrl + 'user/isloggedin')
+        .then(response => {
+            if(response.body == 'false') setLoggedIn(true);
+            else setLoggedIn(false);
+        });
+    }, [])
+
     const [rooms, setRooms] = useState(
         [{
             title: ""
@@ -60,7 +70,7 @@ function App() {
 
     return (
         <div className = "App">
-            <Header UserLoggedIn = {false}/>
+            <Header UserLoggedIn = {userLoggedIn}/>
             <div className = "hero">
                 <h1 className = "header">Аренда танцевальных залов в центре Москвы</h1>
                 <h2>Просторные красивые залы для танцев, йоги, растяжки, мастер-классов, съемок и других мероприятий</h2>

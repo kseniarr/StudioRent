@@ -55,7 +55,10 @@ namespace StudioRent.BLL.Services
             return GetUserByEmail(email) != null // if email was found 
                 && ValidatePwd(password, GetUserByEmail(email).IdUser); // if pwd correct
         }
-
+        public bool IsLoggedIn()
+        {
+            return _accessor.HttpContext.Session.TryGetValue("userId", out byte[] value);
+        }
         public void LogOut()
         {
             _accessor.HttpContext.Session.Remove("userId");
