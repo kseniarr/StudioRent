@@ -34,6 +34,10 @@ header{
     color: var(--white);
     padding: 0 16em 0 8em;
 }
+a{
+    text-decoration: none;
+    color: var(--grey);
+}
 h1{
     font-size: 2.6em;
 }
@@ -67,7 +71,7 @@ th{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    padding: 4rem 8rem;
+    padding: 5.5rem;
 }
 .btn{
     background-color: var(--white);
@@ -79,7 +83,6 @@ th{
     border-radius: 0.5em;
     border-color: var(--magenta);
     border-style: solid;
-    margin: 1.5em 0 1em 0;
     cursor: pointer;
 }
 .btnActive{
@@ -140,15 +143,13 @@ th{
     align-items: center;
     flex-direction: column;
     text-align: center;
+    padding: 2.5rem 4rem 5rem 4rem;
 }
 .header{
     margin-top: 1em;
     font-family: 'Days One', 'Russo One', sans-serif;
     font-weight: 200;
     font-size: 2.2rem;
-}
-.hero{
-    padding: 2em;
 }
 .hero h2{
     width: 50vw;
@@ -165,7 +166,7 @@ th{
     margin-bottom: 4rem;
 }
 .roomDiv h1{
-    margin-top: 4rem;
+    margin-top: 6rem;
 }
 .imgDiv {
     display: flex;
@@ -185,6 +186,9 @@ th{
 }
 .additionalInfo{
     margin: 0 4em;
+}
+.info {
+    margin-top: 0.5rem;
 }
 .footer{
     display: flex;

@@ -1,9 +1,5 @@
-import Button from './Button';
-import Table from './Table'
-import { useState } from 'react' 
 
 const RoomInfo = ({ info } ) => {
-    console.log(info.photosLocation);
     const showImg = () => {
         switch (info.photosLocation) {
             case "../images/black/":

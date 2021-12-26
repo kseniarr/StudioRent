@@ -105,7 +105,7 @@ const Table = ( { roomId } ) => {
                                     <Button state={ btnsArr[i][j] } 
                                             text={ (10 + i) + ":00 - " + (11 + i) + ":00" }
                                             onClick = {onClick({row: i, col: j})}
-                                            key = {`${i}${j}`} />
+                                            key = {{row: i, col: j}} />
                                 </td>);
                 }
                 rows.push(<tr>{ cols }</tr>);

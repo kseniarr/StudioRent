@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Header from './Header'
-import Button from './Button'
-import RoomInfo from './RoomInfo';
-import Table from './Table';
-import Footer from './Footer';
+import Header from './../components/Header'
+import Button from './../components/Button'
+import RoomInfo from './../components/RoomInfo';
+import Table from './../components/Table';
+import Footer from './../components/Footer';
 import { apiUrl } from './../endpoints';
 import axios from 'axios';
 
-function App() {
+const Home = () => {
     const [userLoggedIn, setLoggedIn] = useState(false);
     
     useEffect(() => {
@@ -85,23 +85,20 @@ function App() {
             return <RoomInfo info = { rooms[currRoom - 1] }/>;
         }
     }
-
-    return (
-        <div className = "App">
-            <Header UserLoggedIn = {userLoggedIn}/>
-            <div className = "hero">
-                <h1 className = "header">Аренда танцевальных залов в центре Москвы</h1>
-                <h2>Просторные красивые залы для танцев, йоги, растяжки, мастер-классов, съемок и других мероприятий</h2>
-                <p>кондиционер        вай-фай        муз.колонка с bluetooth        коврики        блоки для йоги</p>
-                <Button state = { headerBtn[0] } text= "Забронировать"/>
-            </div>
-            { renderBtns() }
-            { renderRoomInfo() }
-            <Table roomId = { currRoom }/>
-            <Button state = {headerBtn[0]} text = "Забронировать"/>
-            <Footer />
-        </div>
-    );
+    return <div className = "Home">
+                <Header UserLoggedIn = {userLoggedIn}/>
+                <div className = "hero">
+                    <h1 className = "header">Аренда танцевальных залов в центре Москвы</h1>
+                    <h2>Просторные красивые залы для танцев, йоги, растяжки, мастер-классов, съемок и других мероприятий</h2>
+                    <p>кондиционер        вай-фай        муз.колонка с bluetooth        коврики        блоки для йоги</p>
+                    <Button state = { headerBtn[0] } text= "Забронировать"/>
+                </div>
+                { renderBtns() }
+                { renderRoomInfo() }
+                <Table roomId = { currRoom }/>
+                <Button state = {headerBtn[0]} text = "Забронировать"/>
+                <Footer />
+            </div>;
 }
 
-export default App;
+export default Home;
