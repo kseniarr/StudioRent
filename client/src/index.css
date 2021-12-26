@@ -56,8 +56,8 @@ td{
     margin-top: 0.2rem;
 }
 th{
-    background-color: var(--light-purple);
-    padding: 1rem 0.5rem;
+    background-color: var(--purple);
+    padding: 0.7rem 0.5rem;
 }
 
 
@@ -101,20 +101,19 @@ th{
     font-size: 1rem;
     border: none;
     border-color: var(--white);
+    border-style: ridge;
 }
 .btnInactive{
-    background-color: var(--grey);
+    background-color:lightgray;
     cursor: default;
-    border-style: ridge;
 }
 .btnClickable{
     background-color: var(--white);
-    border-style: outset;
+    cursor: pointer;
 }
 .btnChosen{
     background-color: var(--light-purple);
-    color: var(--white);
-    border-style: inset;
+    cursor: pointer;
 }
 
 

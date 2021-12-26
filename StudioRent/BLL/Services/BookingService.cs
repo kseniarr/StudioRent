@@ -4,6 +4,7 @@ using StudioRent.Exceptions;
 using StudioRent.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,8 +37,18 @@ namespace StudioRent.BLL.Services
 
         public List<Booking> GetRoomBookings(int roomId)
         {
-            if (_db.Rooms.Find(roomId) == null) throw new RoomNotFoundException(roomId);
-            return _db.Bookings.Where(x => x.IdRoom == roomId).ToList();
+            var today = DateTime.Today;
+            DateTime startOfWeek = DateTime.Today.AddDays(
+                (int)CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.FirstDayOfWeek -
+                (int)DateTime.Today.DayOfWeek - 7);
+
+            var dates = new List<DateTime>();
+            for(int i = 0; i < 7; i++)
+            {
+                dates.Add(startOfWeek.AddDays(i));
+            }
+
+            return _db.Bookings.Where(x => x.IdRoom == roomId && dates.Contains(x.Date)).ToList();
         }
 
         public List<UserRoomBookingDto> GetUserBookings(int userId)

@@ -18,23 +18,7 @@ function App() {
         });
     }, [])
 
-    const [rooms, setRooms] = useState(
-        [{
-            title: ""
-        },
-        {
-            title: ""
-        },{
-            title: ""
-        }]
-    ); 
-
-    useEffect(() => {
-        axios.get(apiUrl + 'room')
-        .then(response => {
-            setRooms(response.data);
-        });
-    }, [])
+    const [rooms, setRooms] = useState(null);
     
     const regularBtn = useState("btn");
     const headerBtn = useState("btn headerBtn");
@@ -44,7 +28,15 @@ function App() {
     const [room2, setRoom2] = useState({class: regularBtn[0]});
     const [room3, setRoom3] = useState({class: regularBtn[0]});
 
-    const [currRoom, setCurrRoom] = useState("1");
+    const [currRoom, setCurrRoom] = useState(null);
+
+    useEffect(() => {
+        axios.get(apiUrl + 'room')
+        .then(response => {
+            setRooms(response.data);
+            setCurrRoom(response.data[0].idRoom);
+        })
+    }, [])
 
     const chooseRoom = (id) => 
     {
@@ -65,7 +57,33 @@ function App() {
                 setRoom2({class: regularBtn[0]});
                 setRoom3({class: activeBtn[0]});
             }
+            setCurrRoom(id);
         };
+    }
+
+    const renderBtns = () => {
+        if(rooms !== null && currRoom !== null){
+            return <div className = "btnDiv">
+            <Button state = { room1.class } 
+                    text = { rooms[0].title } 
+                    onClick = { chooseRoom(rooms[0].idRoom) }
+            />
+            <Button state = { room2.class } 
+                    text = { rooms[1].title } 
+                    onClick = { chooseRoom(rooms[1].idRoom) }
+            />
+            <Button state = { room3.class } 
+                    text = { rooms[2].title } 
+                    onClick = { chooseRoom(rooms[2].idRoom) }
+            />
+        </div>;
+        }
+    }
+
+    const renderRoomInfo = () => {
+        if(rooms !== null && currRoom !== null){
+            return <RoomInfo info = { rooms[currRoom - 1] }/>;
+        }
     }
 
     return (
@@ -77,22 +95,9 @@ function App() {
                 <p>кондиционер        вай-фай        муз.колонка с bluetooth        коврики        блоки для йоги</p>
                 <Button state = { headerBtn[0] } text= "Забронировать"/>
             </div>
-            <div className = "btnDiv">
-                <Button state = { room1.class } 
-                        text = { rooms[0].title } 
-                        onClick = { chooseRoom(rooms[0].idRoom) }
-                />
-                <Button state = { room2.class } 
-                        text = { rooms[1].title } 
-                        onClick = { chooseRoom(rooms[1].idRoom) }
-                />
-                <Button state = { room3.class } 
-                        text = { rooms[2].title } 
-                        onClick = { chooseRoom(rooms[2].idRoom) }
-                />
-            </div>
-            <RoomInfo roomId = {currRoom}/> 
-            <Table />
+            { renderBtns() }
+            { renderRoomInfo() }
+            <Table roomId = { currRoom }/>
             <Button state = {headerBtn[0]} text = "Забронировать"/>
             <Footer />
         </div>
