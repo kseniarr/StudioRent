@@ -11,11 +11,11 @@ namespace StudioRent.BLL.Interfaces
     {
         public List<User> SignUp(UserSignUpDto user);
         public bool ValidateSignUp(UserSignUpDto user);
-        public void LogIn(string email);
+        public User LogIn(string email);
         public bool ValidateLogIn(string email, string password);
-        public bool IsLoggedIn();
         public void LogOut();
         public bool ValidatePwd(string userPwd, int userId);
         public User ChangePwd(int userId, string oldPwd, string newPwd);
+        public User GetUserByEmail(string email);
     }
 }

@@ -4,7 +4,10 @@ const Header = ({ UserLoggedIn } ) => {
     return (
         <header>
             <Link to = "/" ><p className = 'companyName'>Studio<span>Rent</span></p></Link>
-            <Link to = { UserLoggedIn ? "mybookings" : "login"}><h3>{ UserLoggedIn ? "Мои брони" : "Войти" }</h3></Link>
+            <div className = "rightHeaderDiv">
+                <Link to = { UserLoggedIn ? "/mybookings" : "/login"}><h3>{ UserLoggedIn ? "Мои брони" : "Войти" }</h3></Link>
+                <Link to = "/logout" className = { UserLoggedIn ? "logoutShow" : "logoutHide" }><h3>Выйти</h3></Link>
+            </div>
         </header>
     )
 }

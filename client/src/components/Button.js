@@ -1,17 +1,17 @@
-import { userState, useState } from 'react'
 
 const onClickFunc = () => {
     console.log("click")
 }
 
-const Button = ({ state, text, onClick} ) => {
+const Button = ({ state, text, onClick, onSubmit} ) => {
     return (
-        <button className = { state } onClick = {onClick}>{ text }</button>
+        <button className = { state } onClick = {onClick} onSubmit = { onSubmit }>{ text }</button>
     )
 }
 
 Button.defaultProps = {
-    onClick: onClickFunc
+    onClick: onClickFunc,
+    onSubmit: onClickFunc
 }
 
 export default Button

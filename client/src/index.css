@@ -121,6 +121,7 @@ th{
 
 
 /* CUSTOM CLASSES */
+
 .center{
     display: flex;
     justify-content: center;
@@ -135,6 +136,10 @@ th{
 }
 .companyName > span {
     color: var(--purple);
+}
+.rightHeaderDiv {
+    display: flex;
+    flex-direction: row;
 }
 .hero {
     background-color: var(--purple);
@@ -205,4 +210,91 @@ th{
     width: 50vw;
     height: 50%;
     object-fit: fill;
+}
+
+
+/* LOGOUT */
+
+.logoutShow {
+    display: block;
+    margin-left: 2rem;
+}
+.logoutHide {
+    display: none;
+}
+
+
+/* LOGIN */
+
+.form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 90vh;
+}
+.signup {
+    height: 100vh;
+}
+form{
+    padding: 2rem 4rem;
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+    color: var(--dark-blue);
+}
+.link{
+    color: var(--dark-blue);
+}
+.form h1 {
+    color: var(--purple);
+}
+.formInput {
+    display: flex;
+    flex-direction: column;
+    max-width: 280px;
+    margin: 1rem 0 0 0;
+}
+input{
+    padding: 0.7rem;
+    margin: 0.2rem 0;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+label {
+    font-size: 1rem;
+    color: var(--magenta);
+    margin-bottom: 0.5rem;
+}
+.name{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.firstName {
+    width: 6rem;
+}
+.lastName {
+    width: 10rem;
+    margin-left: 1.5rem;
+}
+.errorMessage {
+    font-size: 0.7rem; 
+    margin: 0.5rem 0 1rem 0 ;
+    display: none;
+}
+.error {
+    font-size: 1rem; 
+    margin: 0.5rem 0 1rem 0 ;
+    color: red;
+}
+input:invalid[focus = "true"] {
+    border-color: red;
+}
+input:invalid[focus = "true"] ~ .errorMessage {
+    display: block;
+    color: red;
+}
+input:focus{
+    border-color: var(--purple);
 }

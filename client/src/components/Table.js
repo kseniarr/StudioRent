@@ -38,6 +38,7 @@ const Table = ( { roomId } ) => {
             .then(response => {
                 setBookings(response.data);
             })
+            .catch(err => console.log(err));
     }, [])
 
     useEffect( () => {

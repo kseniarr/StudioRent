@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from './../components/Header'
 import Button from './../components/Button'
 import RoomInfo from './../components/RoomInfo';
@@ -6,17 +6,10 @@ import Table from './../components/Table';
 import Footer from './../components/Footer';
 import { apiUrl } from './../endpoints';
 import axios from 'axios';
+import { UserContext } from '../App';
 
 const Home = () => {
-    const [userLoggedIn, setLoggedIn] = useState(false);
-    
-    useEffect(() => {
-        axios.get(apiUrl + 'user/isloggedin')
-        .then(response => {
-            if(response.body == 'false') setLoggedIn(true);
-            else setLoggedIn(false);
-        });
-    }, [])
+    const userData = useContext(UserContext);
 
     const [rooms, setRooms] = useState(null);
     
@@ -36,6 +29,7 @@ const Home = () => {
             setRooms(response.data);
             setCurrRoom(response.data[0].idRoom);
         })
+        .catch(err => console.log(err));
     }, [])
 
     const chooseRoom = (id) => 
@@ -85,20 +79,22 @@ const Home = () => {
             return <RoomInfo info = { rooms[currRoom - 1] }/>;
         }
     }
-    return <div className = "Home">
-                <Header UserLoggedIn = {userLoggedIn}/>
-                <div className = "hero">
-                    <h1 className = "header">Аренда танцевальных залов в центре Москвы</h1>
-                    <h2>Просторные красивые залы для танцев, йоги, растяжки, мастер-классов, съемок и других мероприятий</h2>
-                    <p>кондиционер        вай-фай        муз.колонка с bluetooth        коврики        блоки для йоги</p>
-                    <Button state = { headerBtn[0] } text= "Забронировать"/>
-                </div>
-                { renderBtns() }
-                { renderRoomInfo() }
-                <Table roomId = { currRoom }/>
-                <Button state = {headerBtn[0]} text = "Забронировать"/>
-                <Footer />
-            </div>;
+    return (
+            <div className = "Home">
+                            <Header UserLoggedIn = { userData.email !== '' }/>
+                            <div className = "hero">
+                                <h1 className = "header">Аренда танцевальных залов в центре Москвы</h1>
+                                <h2>Просторные красивые залы для танцев, йоги, растяжки, мастер-классов, съемок и других мероприятий</h2>
+                                <p>кондиционер        вай-фай        муз.колонка с bluetooth        коврики        блоки для йоги</p>
+                                <Button state = { headerBtn[0] } text= "Забронировать"/>
+                            </div>
+                            { renderBtns() }
+                            { renderRoomInfo() }
+                            <Table roomId = { currRoom }/>
+                            <Button state = {headerBtn[0]} text = "Забронировать"/>
+                            <Footer />
+                        </div>
+    );
 }
 
 export default Home;

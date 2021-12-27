@@ -45,19 +45,16 @@ namespace StudioRent.BLL.Services
             return GetUserByEmail(user.Email) == null && !string.IsNullOrEmpty(user.Email); 
         }
 
-        public void LogIn(string email)
+        public User LogIn(string email)
         {
             _accessor.HttpContext.Session.SetString("userId", GetUserByEmail(email).IdUser.ToString());
+            return GetUserByEmail(email);
         }
         public bool ValidateLogIn(string email, string password)
         {
             if (string.IsNullOrEmpty(email)) throw new InvalidEmailException();
             return GetUserByEmail(email) != null // if email was found 
                 && ValidatePwd(password, GetUserByEmail(email).IdUser); // if pwd correct
-        }
-        public bool IsLoggedIn()
-        {
-            return _accessor.HttpContext.Session.TryGetValue("userId", out byte[] value);
         }
         public void LogOut()
         {
@@ -106,8 +103,7 @@ namespace StudioRent.BLL.Services
             }
             return pwdHash;
         }
-
-        private User GetUserByEmail(string email)
+        public User GetUserByEmail(string email)
         {
             return _db.Users.Where(x => x.Email == email).FirstOrDefault();
         }

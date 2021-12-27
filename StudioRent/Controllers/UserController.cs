@@ -49,8 +49,7 @@ namespace StudioRent.Controllers
             {
                 if (_userService.ValidateLogIn(login.UserEmail, login.UserPwd))
                 {
-                    _userService.LogIn(login.UserEmail);
-                    return Ok("Log in successful");
+                    return Ok(_userService.LogIn(login.UserEmail));
                 }
                 else return UnprocessableEntity("Email or password was incorrect");
             }
@@ -60,11 +59,7 @@ namespace StudioRent.Controllers
             }
         }
 
-        [HttpGet, Route("IsLoggedIn")]
-        public IActionResult IsLoggedIn()
-        {
-            return Ok(_userService.IsLoggedIn());
-        }
+
 
         [HttpPost, Route("LogOut")]
         public IActionResult LogOut()
@@ -83,6 +78,12 @@ namespace StudioRent.Controllers
                 else return UnprocessableEntity("Old password was incorrect.");
             }
             else return Unauthorized();
+        }
+
+        [HttpGet, Route("GetUserByEmail")]
+        public IActionResult GetUserByEmail(string email)
+        {
+            return Ok(_userService.GetUserByEmail(email));
         }
     }
 }
