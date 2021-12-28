@@ -25,6 +25,9 @@ body {
     font-weight: 300;
     background-color: var(--white);
     color: var(--dark-blue);
+    background-image: url(../src/images/bg2.png);
+    background-repeat: repeat-y;
+    
 }
 header{
     display: flex;
@@ -237,6 +240,7 @@ input:focus{
 }
 .hero {
     background-color: var(--purple);
+    background-image: url(../src/images/bg.png);
     color: var(--white);
     display: flex;
     align-items: center;
@@ -318,4 +322,7 @@ input:focus{
 .bookingsTd, .bookingsTh{
     padding: 1rem;
     text-align: center;
+}
+.bookingsTd{
+    background-color: var(--white);
 }
