@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using StudioRent.BLL.Interfaces;
+using StudioRent.DTOs;
 using StudioRent.Models;
 using System;
 using System.Collections.Generic;
@@ -30,13 +31,13 @@ namespace StudioRent.Controllers
         }
 
         [HttpGet, Route("GetUserBookings")]
-        public IActionResult GetUserBookings(int userId)
+        public IActionResult GetUserBookings(string email)
         {
-            return Ok(_bookingService.GetUserBookings(userId)); 
+            return Ok(_bookingService.GetUserBookings(email)); 
         }
 
         [HttpPost]
-        public IActionResult CreateBooking(Booking booking)
+        public IActionResult CreateBooking(BookingDto booking)
         {
             return Ok(_bookingService.CreateBooking(booking));
         }

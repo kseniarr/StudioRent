@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import Header from './../components/Header'
 import Button from './../components/Button'
 import RoomInfo from './../components/RoomInfo';
@@ -21,7 +21,7 @@ const Home = () => {
     const [room2, setRoom2] = useState({class: regularBtn[0]});
     const [room3, setRoom3] = useState({class: regularBtn[0]});
 
-    const [currRoom, setCurrRoom] = useState(null);
+    const [currRoom, setCurrRoom] = useState(1);
 
     useEffect(() => {
         axios.get(apiUrl + 'room')
@@ -51,7 +51,6 @@ const Home = () => {
                 setRoom2({class: regularBtn[0]});
                 setRoom3({class: activeBtn[0]});
             }
-            setCurrRoom(id);
         };
     }
 
@@ -90,8 +89,7 @@ const Home = () => {
                             </div>
                             { renderBtns() }
                             { renderRoomInfo() }
-                            <Table roomId = { currRoom }/>
-                            <Button state = {headerBtn[0]} text = "Забронировать"/>
+                            <Table roomId = { currRoom } rooms = { rooms }/>
                             <Footer />
                         </div>
     );

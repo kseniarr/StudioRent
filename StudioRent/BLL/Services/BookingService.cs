@@ -19,11 +19,25 @@ namespace StudioRent.BLL.Services
             _db = db;
         }
 
-        public List<Booking> CreateBooking(Booking booking)
+        public List<Booking> CreateBooking(BookingDto booking)
         {
-            _db.Bookings.Add(booking);
+            var idUser = _db.Users.Where(x => x.Email == booking.Email).FirstOrDefault().IdUser;
+            createBooking(booking, idUser);
+            return GetRoomBookings(booking.IdRoom);
+        }
+        private void createBooking(BookingDto booking, int idUser)
+        {
+            _db.Bookings.Add(new Booking()
+            {
+                IdUser = idUser,
+                IdRoom = booking.IdRoom,
+                HourFrom = booking.HourFrom,
+                HourTo = booking.HourTo,
+                Date = booking.Date,
+                NumPeople = booking.NumPeople,
+                Price = booking.Price
+            });
             _db.SaveChanges();
-            return _db.Bookings.ToList();
         }
 
         public List<Booking> DeleteBooking(int bookingId)
@@ -38,9 +52,11 @@ namespace StudioRent.BLL.Services
         public List<Booking> GetRoomBookings(int roomId)
         {
             var today = DateTime.Today;
+            var temp = (int)CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.FirstDayOfWeek;
+            var temp2 = (int)DateTime.Today.DayOfWeek;
             DateTime startOfWeek = DateTime.Today.AddDays(
                 (int)CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.FirstDayOfWeek -
-                (int)DateTime.Today.DayOfWeek - 7);
+                (int)DateTime.Today.DayOfWeek);
 
             var dates = new List<DateTime>();
             for(int i = 0; i < 7; i++)
@@ -51,9 +67,9 @@ namespace StudioRent.BLL.Services
             return _db.Bookings.Where(x => x.IdRoom == roomId && dates.Contains(x.Date)).ToList();
         }
 
-        public List<UserRoomBookingDto> GetUserBookings(int userId)
+        public List<UserRoomBookingDto> GetUserBookings(string email)
         {
-            if (_db.Users.Find(userId) == null) throw new UserNotFoundException(userId);
+            if (_db.Users.Where(x => x.Email == email).FirstOrDefault() == null) throw new UserNotFoundException(email);
 
             return _db.Bookings.Join(_db.Rooms, 
                 p => p.IdRoom, 

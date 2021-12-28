@@ -7,10 +7,10 @@ namespace StudioRent.Exceptions
 {
     public class UserNotFoundException : Exception
     {
-        public int UserId { get; private set; }
-        public UserNotFoundException(int userId) : base ($"User with id {userId} was not found.")
+        public string UserEmail { get; private set; }
+        public UserNotFoundException(string userEmail) : base ($"User with email {userEmail} was not found.")
         {
-            UserId = userId;
+            UserEmail = userEmail;
         } 
     }
 }

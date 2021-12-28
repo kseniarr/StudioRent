@@ -63,7 +63,7 @@ namespace StudioRent.BLL.Services
 
         public bool ValidatePwd(string userPwd, int userId)
         {
-            if (_db.Users.Find(userId) == null) throw new UserNotFoundException(userId);
+            if (_db.Users.Find(userId) == null) throw new UserNotFoundException(_db.Users.Find(userId).Email);
             if (string.IsNullOrEmpty(userPwd)) throw new InvalidPasswordException();
 
             byte[] dbPwd = _db.Users.Find(userId).Password, dbKey = _db.Users.Find(userId).PasswordKey,

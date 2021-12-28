@@ -65,7 +65,7 @@ namespace StudioRent.Controllers
         public IActionResult LogOut()
         {
             _userService.LogOut();
-            return Ok("You have been successfully logged out."); // change to redirect later
+            return Ok("You have been successfully logged out.");
         }
 
         [HttpPut, Route("ChangePassword")]
