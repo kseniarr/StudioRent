@@ -35,7 +35,7 @@ const MyBookings = () => {
                 cols.push(<td className="bookingsTd">{ bookingsData[i].title }</td>);
                 cols.push(<td className="bookingsTd">{ bookingsData[i].hourFrom } :00 - { bookingsData[i].hourTo }:00</td>);
                 cols.push(<td className="bookingsTd">{ (new Date(bookingsData[i].date)).getDate() + "." + (new Date(bookingsData[i].date)).getMonth() }</td>);
-                cols.push(<td className="bookingsTd">{ 1200 }</td>);
+                cols.push(<td className="bookingsTd">{ bookingsData[i].price}</td>);
                 cols.push(<td><Button state = { regularBtn + " bookingsBtn"} text = "Удалить" onClick = { () => deleteRow(bookingsData[i].bookingId) } /></td>)
                 rows.push(<tr>{cols}</tr>);
             }

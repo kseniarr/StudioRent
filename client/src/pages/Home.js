@@ -85,11 +85,12 @@ const Home = () => {
                                 <h1 className = "header">Аренда танцевальных залов в центре Москвы</h1>
                                 <h2>Просторные красивые залы для танцев, йоги, растяжки, мастер-классов, съемок и других мероприятий</h2>
                                 <p>кондиционер        вай-фай        муз.колонка с bluetooth        коврики        блоки для йоги</p>
-                                <Button state = { headerBtn[0] } text= "Забронировать"/>
+                                
+                                {/* <a href="#broneTable"><Button state = { headerBtn[0] } text= "Забронировать" onClick={ () =>  null }/></a> */}
                             </div>
                             { renderBtns() }
                             { renderRoomInfo() }
-                            <Table roomId = { currRoom } rooms = { rooms }/>
+                            <Table id = "broneTable" roomId = { currRoom } rooms = { rooms }/>
                             <Footer />
                         </div>
     );

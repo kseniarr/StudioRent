@@ -57,7 +57,7 @@ const Login = () => {
                 <FormInput name = "UserPwd" label = "Пароль" type="password" 
                         value = { pwd } onChange = { (e) => setPwd(e.target.value) }
                         required = { true }
-                        pattern = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"/>
+                        pattern = ".*"/>
                 <Button state = "btn headerBtn" text = "Войти" onSubmit = { handleSubmit }/>
                 <Link to = "/signup"><p className = "center link">Зарегистрироваться</p></Link>
             </form>

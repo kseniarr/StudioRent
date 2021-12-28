@@ -83,7 +83,8 @@ namespace StudioRent.BLL.Services
                         BookingId = p.IdBooking,
                         HourFrom = p.HourFrom,
                         HourTo = p.HourTo,
-                        Date = p.Date
+                        Date = p.Date,
+                        Price = p.Price
                     }
                 ).ToList();
         }
