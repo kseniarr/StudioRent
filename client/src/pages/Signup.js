@@ -35,9 +35,9 @@ const Signup = () => {
             const res = await axios.post(apiUrl + 'user/signup', userDto)
             .then(response => {
                 if(response.status === 200){
-                    userData.setEmail(userDto.Email);
-                    userData.setFirstName(userDto.FirstName);
-                    userData.setLastName(userDto.LastName);
+                    userData.setEmail(userData.email = userDto.Email);
+                    userData.setFirstName(userData.firstName = userDto.FirstName);
+                    userData.setLastName(userData.lastName = userDto.LastName);
                     console.log(userData);
                     navigate("/mybookings");
                     return response.data;
