@@ -34,7 +34,7 @@ namespace StudioRent.Controllers
             {
                 if (_userService.ValidateSignUp(user))
                     return Ok(_userService.SignUp(user));
-                else return UnprocessableEntity("Email has alreaby been taken");
+                else return UnprocessableEntity("Пользователь с такой почтой уже существует");
             }
             catch (InvalidEmailException ex)
             {
@@ -51,7 +51,7 @@ namespace StudioRent.Controllers
                 {
                     return Ok(_userService.LogIn(login.UserEmail));
                 }
-                else return UnprocessableEntity("Email or password was incorrect");
+                else return UnprocessableEntity("Неверный пароль или почта");
             }
             catch (Exception ex)
             {
@@ -59,25 +59,11 @@ namespace StudioRent.Controllers
             }
         }
 
-
-
         [HttpPost, Route("LogOut")]
         public IActionResult LogOut()
         {
             _userService.LogOut();
             return Ok("You have been successfully logged out.");
-        }
-
-        [HttpPut, Route("ChangePassword")]
-        public IActionResult ChangePassword(int userId, string oldPwd, string newPwd)
-        {
-            if (_accessor.HttpContext.Session.Keys.Contains("userId"))
-            {
-                if (_userService.ValidatePwd(oldPwd, userId))
-                    return NoContent();
-                else return UnprocessableEntity("Old password was incorrect.");
-            }
-            else return Unauthorized();
         }
 
         [HttpGet, Route("GetUserByEmail")]

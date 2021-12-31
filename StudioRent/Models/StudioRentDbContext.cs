@@ -43,8 +43,6 @@ namespace StudioRent.Models
 
                 entity.Property(e => e.IdUser).HasColumnName("idUser");
 
-                entity.Property(e => e.NumPeople).HasColumnName("numPeople");
-
                 entity.Property(e => e.Price).HasColumnName("price");
 
                 entity.HasOne(d => d.IdRoomNavigation)

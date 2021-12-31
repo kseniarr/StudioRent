@@ -34,7 +34,6 @@ namespace StudioRent.BLL.Services
                 HourFrom = booking.HourFrom,
                 HourTo = booking.HourTo,
                 Date = booking.Date,
-                NumPeople = booking.NumPeople,
                 Price = booking.Price
             });
             _db.SaveChanges();
@@ -51,9 +50,6 @@ namespace StudioRent.BLL.Services
 
         public List<Booking> GetRoomBookings(int roomId)
         {
-            var today = DateTime.Today;
-            var temp = (int)CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.FirstDayOfWeek;
-            var temp2 = (int)DateTime.Today.DayOfWeek;
             DateTime startOfWeek = DateTime.Today.AddDays(
                 (int)CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.FirstDayOfWeek -
                 (int)DateTime.Today.DayOfWeek);
@@ -71,22 +67,38 @@ namespace StudioRent.BLL.Services
         {
             if (_db.Users.Where(x => x.Email == email).FirstOrDefault() == null) throw new UserNotFoundException(email);
 
-            return _db.Bookings.Join(_db.Rooms, 
-                p => p.IdRoom, 
-                c => c.IdRoom, 
-                (p, c) =>  
-                    new UserRoomBookingDto()
-                    {
-                        UserId = p.IdUser,
-                        RoomId = p.IdRoom,
-                        Title = c.Title,
-                        BookingId = p.IdBooking,
-                        HourFrom = p.HourFrom,
-                        HourTo = p.HourTo,
-                        Date = p.Date,
-                        Price = p.Price
-                    }
-                ).ToList();
+            var query = from bookings in _db.Bookings
+                        join rooms in _db.Rooms on bookings.IdRoom equals rooms.IdRoom
+                        select new
+                        {
+                            bookings.IdUser,
+                            bookings.IdRoom,
+                            rooms.Title,
+                            bookings.IdBooking,
+                            bookings.HourFrom,
+                            bookings.HourTo,
+                            bookings.Date,
+                            bookings.Price
+                        };
+            var result = query.ToList();
+            var userBookings = result.Where(x => x.IdUser == _db.Users.Where(x => x.Email == email).FirstOrDefault().IdUser).ToList().OrderByDescending(x => x.Date);
+            var res = new List<UserRoomBookingDto>();
+            foreach(var item in userBookings)
+            {
+                res.Add(new UserRoomBookingDto()
+                {
+                    UserId = item.IdUser,
+                    RoomId = item.IdRoom,
+                    Title = item.Title,
+                    BookingId = item.IdBooking,
+                    HourFrom = item.HourFrom,
+                    HourTo = item.HourTo,
+                    Date = item.Date,
+                    Price = item.Price
+                });
+            }
+
+            return res.OrderByDescending(x => x.Date).ToList();
         }
     }
 }

@@ -72,8 +72,7 @@ const Table = ( { roomId, rooms } ) => {
                 })
                 .catch(err => console.log(err));
     }, [roomId])
-
-
+    
     // SETS INACTIVE COLUMNS FOR PREVIOUS DAYS
 
     useEffect( () => {
@@ -83,7 +82,10 @@ const Table = ( { roomId, rooms } ) => {
             for(let i = 0; i < 13; i++) {
                 let cols = [];
                 for(let j = 0; j < 7; j++){
-                    const btnState = j < emptyCols ? inactiveTBtn : clickableTBtn;
+                    let btnState = j < emptyCols ? inactiveTBtn : clickableTBtn;
+                    if((j == emptyCols) && ((new Date()).getHours() >= i + 10)) {
+                        btnState = inactiveTBtn;
+                    }
                     cols.push(btnState);
                 }
                 rows.push(cols);
@@ -192,7 +194,6 @@ const Table = ( { roomId, rooms } ) => {
                 HourFrom: hourFromRef.current,
                 hourTo: hourToRef.current, 
                 Date: (new Date()).getFullYear() + "-" + dateParts[1] + "-" + dateParts[0] + "T00:00:00",
-                NumPeople: 5,
                 Price: priceRef.current
             }
 

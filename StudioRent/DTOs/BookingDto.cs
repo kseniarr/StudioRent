@@ -12,7 +12,6 @@ namespace StudioRent.DTOs
         public int HourFrom { get; set; }
         public int HourTo { get; set; }
         public DateTime Date { get; set; }
-        public int NumPeople { get; set; }
         public double Price { get; set; }
     }
 }

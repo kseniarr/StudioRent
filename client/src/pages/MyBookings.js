@@ -30,11 +30,13 @@ const MyBookings = () => {
     const displayTable = () => {
         if(bookingsData !== null){
             let rows = [];
-            for(let i = 0; i < bookingsData.length; i++) {
+            for(let i = bookingsData.length - 1; i > 0; i--) {
                 let cols = [];
+                let day = (new Date(bookingsData[i].date)).getDate();
+                let month = (new Date(bookingsData[i].date)).getMonth();
                 cols.push(<td className="bookingsTd">{ bookingsData[i].title }</td>);
                 cols.push(<td className="bookingsTd">{ bookingsData[i].hourFrom } :00 - { bookingsData[i].hourTo }:00</td>);
-                cols.push(<td className="bookingsTd">{ (new Date(bookingsData[i].date)).getDate() + "." + (new Date(bookingsData[i].date)).getMonth() }</td>);
+                cols.push(<td className="bookingsTd">{ (day < 10 ? ("0" + day) : day) + "." + ((month + 1) < 10 ? ("0" + (month + 1)) : (month + 1))  }</td>);
                 cols.push(<td className="bookingsTd">{ bookingsData[i].price}</td>);
                 cols.push(<td><Button state = { regularBtn + " bookingsBtn"} text = "Удалить" onClick = { () => deleteRow(bookingsData[i].bookingId) } /></td>)
                 rows.push(<tr>{cols}</tr>);

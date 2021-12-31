@@ -35,16 +35,16 @@ const Signup = () => {
             const res = await axios.post(apiUrl + 'user/signup', userDto)
             .then(response => {
                 if(response.status === 200){
-                    userData.setEmail(userData.email = userDto.Email);
-                    userData.setFirstName(userData.firstName = userDto.FirstName);
-                    userData.setLastName(userData.lastName = userDto.LastName);
+                    userData.setEmail(userDto.Email);
+                    userData.setFirstName(userDto.FirstName);
+                    userData.setLastName(userDto.LastName);
                     console.log(userData);
                     navigate("/mybookings");
                     return response.data;
                 }
             })
             .catch(err => {
-                err.response.data === undefined ? setGlobalError(err) : setGlobalError(err.response.data);
+                err.response.data === undefined ? setGlobalError(err) : setGlobalError("Неверный пароль или почта");
                 setEmail('');
                 setPwd('');
                 setRepeatPwd('');

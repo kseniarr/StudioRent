@@ -9,13 +9,12 @@ namespace StudioRent.BLL.Interfaces
 {
     public interface IUserService
     {
-        public List<User> SignUp(UserSignUpDto user);
+        public UserResponse SignUp(UserSignUpDto user);
         public bool ValidateSignUp(UserSignUpDto user);
-        public User LogIn(string email);
+        public UserResponse LogIn(string email);
         public bool ValidateLogIn(string email, string password);
         public void LogOut();
         public bool ValidatePwd(string userPwd, int userId);
-        public User ChangePwd(int userId, string oldPwd, string newPwd);
         public User GetUserByEmail(string email);
     }
 }

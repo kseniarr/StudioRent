@@ -13,13 +13,12 @@ const Home = () => {
 
     const [rooms, setRooms] = useState(null);
     
-    const regularBtn = useState("btn");
-    const headerBtn = useState("btn headerBtn");
-    const activeBtn = useState("btn btnActive");
+    const regularBtn = "btn";
+    const activeBtn = "btn btnActive";
 
-    const [room1, setRoom1] = useState({class: activeBtn[0]});
-    const [room2, setRoom2] = useState({class: regularBtn[0]});
-    const [room3, setRoom3] = useState({class: regularBtn[0]});
+    const [room1, setRoom1] = useState({class: activeBtn});
+    const [room2, setRoom2] = useState({class: regularBtn});
+    const [room3, setRoom3] = useState({class: regularBtn});
 
     const [currRoom, setCurrRoom] = useState(1);
 
@@ -37,19 +36,19 @@ const Home = () => {
         return function () {
             setCurrRoom(id);
             if (id == rooms[0].idRoom) {
-                setRoom1({class: activeBtn[0]});
-                setRoom2({class: regularBtn[0]});
-                setRoom3({class: regularBtn[0]});
+                setRoom1({class: activeBtn});
+                setRoom2({class: regularBtn});
+                setRoom3({class: regularBtn});
             }
             else if (id == rooms[1].idRoom){
-                setRoom1({class: regularBtn[0]});
-                setRoom2({class: activeBtn[0]});
-                setRoom3({class: regularBtn[0]});
+                setRoom1({class: regularBtn});
+                setRoom2({class: activeBtn});
+                setRoom3({class: regularBtn});
             }
             else{
-                setRoom1({class: regularBtn[0]});
-                setRoom2({class: regularBtn[0]});
-                setRoom3({class: activeBtn[0]});
+                setRoom1({class: regularBtn});
+                setRoom2({class: regularBtn});
+                setRoom3({class: activeBtn});
             }
         };
     }
@@ -85,12 +84,10 @@ const Home = () => {
                                 <h1 className = "header">Аренда танцевальных залов в центре Москвы</h1>
                                 <h2>Просторные красивые залы для танцев, йоги, растяжки, мастер-классов, съемок и других мероприятий</h2>
                                 <p>кондиционер        вай-фай        муз.колонка с bluetooth        коврики        блоки для йоги</p>
-                                
-                                {/* <a href="#broneTable"><Button state = { headerBtn[0] } text= "Забронировать" onClick={ () =>  null }/></a> */}
                             </div>
                             { renderBtns() }
                             { renderRoomInfo() }
-                            <Table id = "broneTable" roomId = { currRoom } rooms = { rooms }/>
+                            <Table roomId = { currRoom } rooms = { rooms }/>
                             <Footer />
                         </div>
     );

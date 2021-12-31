@@ -24,7 +24,7 @@ namespace StudioRent.BLL.Services
         }
 
 
-        public List<User> SignUp(UserSignUpDto user)
+        public UserResponse SignUp(UserSignUpDto user)
         {
             HashPwd(user.Password, out byte[] pwdKey, out byte[] pwdHash);
 
@@ -35,9 +35,15 @@ namespace StudioRent.BLL.Services
                 Password = pwdHash,
                 PasswordKey = pwdKey
             });
-
+            var response = new UserResponse()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            };
             _db.SaveChanges();
-            return _db.Users.ToList();
+
+            return response;
         }
         public bool ValidateSignUp(UserSignUpDto user)
         {
@@ -45,10 +51,16 @@ namespace StudioRent.BLL.Services
             return GetUserByEmail(user.Email) == null && !string.IsNullOrEmpty(user.Email); 
         }
 
-        public User LogIn(string email)
+        public UserResponse LogIn(string email)
         {
             _accessor.HttpContext.Session.SetString("userId", GetUserByEmail(email).IdUser.ToString());
-            return GetUserByEmail(email);
+            var response = new UserResponse()
+            {
+                FirstName = GetUserByEmail(email).FirstName,
+                LastName = GetUserByEmail(email).LastName,
+                Email = email
+            };
+            return response;
         }
         public bool ValidateLogIn(string email, string password)
         {
@@ -74,16 +86,6 @@ namespace StudioRent.BLL.Services
                 if (dbPwd[i] != userPwdHash[i]) return false;
             }
             return true;
-        }
-        public User ChangePwd(int userId, string oldPwd, string newPwd)
-        {
-            if (ValidatePwd(oldPwd, userId))
-            {
-
-                _db.SaveChanges();
-                return _db.Users.Where(x => x.IdUser == userId).FirstOrDefault();
-            }
-            else return null;
         }
         private byte[] HashPwd(string pwd, out byte[] pwdKey, out byte[] pwdHash)
         {

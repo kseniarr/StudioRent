@@ -123,7 +123,8 @@ th{
 }
 .bookingsBtn {
     font-size: 1rem;
-    padding: 0.3rem 1.5rem;
+    padding: 0.2rem 0.7rem;
+    font-weight: 300;
 }
 
 
